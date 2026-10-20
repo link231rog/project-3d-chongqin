@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { mergeGeometries, mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import snapshot from './peninsula-snapshot.json';
 import parks from './peninsula-parks.json';
+import riverBanks from './river-banks.json';
 import { buildQuarters, QUARTER_SOURCES } from './quarters.js';
 import elevationSnapshot from './peninsula-elevation.json';
 import { sampleElevation } from './elevation.js';
@@ -60,7 +61,7 @@ export async function buildPeninsula(scene, interactiveObjects, nightMaterials) 
   const [data, elevation] = await Promise.all([decode(snapshot), decode(elevationSnapshot)]);
   const group = new THREE.Group();
   group.name = '渝中半岛 · 地理底图';
-  group.userData.source = { ...data.meta, terrain: elevation };
+  group.userData.source = { ...data.meta, terrain: elevation, riverBanks: riverBanks.sources };
   const scale = data.meta.metersPerUnit;
   const project = (lon, lat) => new THREE.Vector3(
     (lon - data.meta.origin[0]) * 96800 / scale, 0,
@@ -81,7 +82,7 @@ export async function buildPeninsula(scene, interactiveObjects, nightMaterials) 
     const latitude = data.meta.origin[1] - z * scale / 111320;
     return Math.max(0.7, (sampleElevation(elevation, longitude, latitude) - 167) / scale);
   };
-  const landPolygons = [{ outer: boundary, holes: [] }];
+  const landPolygons = [{ outer: boundary, holes: [] }, ...riverBanks.polygons];
   const terrainPositions = [];
   const subdivide = (a, b, c, depth = 0, target = terrainPositions, elevationOffset = 0) => {
     const abLength = a.distanceToSquared(b), bcLength = b.distanceToSquared(c), caLength = c.distanceToSquared(a);
