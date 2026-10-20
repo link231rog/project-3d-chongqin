@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>重庆渝中半岛 · 3D山城模型</title>
+  <script>
+    if (location.protocol === 'file:') location.replace('http://127.0.0.1:5173/');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏙️</text></svg>">
+  <link rel="stylesheet" href="./src/style.css" />
+  <!-- Google Fonts for sleek model typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Noto+Sans+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-theme">
+  <!-- 3D WebGL Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- Cinematic Top Bar -->
+  <header class="ui-header">
+    <div class="brand">
+      <div class="brand-row">
+        <span class="brand-badge">3D CITY DIORAMA</span>
+        <a class="home-backlink" href="https://link231rog.github.io/Poster/" target="_blank" rel="noopener noreferrer" title="返回主页">
+          <span class="home-backlink-icon">🏠</span>
+          <span class="home-backlink-text">主页：https://link231rog.github.io/Poster/</span>
+          <span class="home-backlink-arrow">↗</span>
+        </a>
+        <a class="github-backlink" href="https://github.com/link231rog/project-3d-chongqin" target="_blank" rel="noopener noreferrer" title="GitHub 开源仓库">
+          <svg class="github-icon" viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+          <span class="github-text">GitHub 开源</span>
+          <span class="home-backlink-arrow">↗</span>
+        </a>
+      </div>
+      <h1>重庆 · 渝中半岛</h1>
+      <span class="sub-title">CHONGQING · YUZHONG PENINSULA</span>
+    </div>
+
+    <!-- Quick Environment Presets -->
+    <div class="env-switcher">
+      <button class="env-btn active" data-env="daylight">
+        <span class="icon">☀️</span>
+        <span class="label">明朗微缩</span>
+      </button>
+      <button class="env-btn" data-env="sunset">
+        <span class="icon">🌆</span>
+        <span class="label">两江晚霞</span>
+      </button>
+      <button class="env-btn" data-env="cyberpunk">
+        <span class="icon">🌃</span>
+        <span class="label">赛博山城</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Landmark Perspective Nav (Left Toolbar) -->
+  <nav class="camera-nav">
+    <button type="button" class="sidebar-toggle" data-sidebar-label="视角巡航" aria-expanded="true" aria-controls="view-sidebar-content">视角巡航 · 收起</button>
+    <div class="sidebar-content" id="view-sidebar-content">
+    <button class="cam-btn" data-view="overview">
+      <span class="num">01</span>
+      <div class="cam-text">
+        <div class="name">渝中核心全景</div>
+        <div class="desc">Yuzhong Mother City</div>
+      </div>
+    </button>
+    <button class="cam-btn" data-view="confluence">
+      <span class="num">02</span>
+      <div class="cam-text">
+        <div class="name">两江交汇 · 江水相融</div>
+        <div class="desc">Two Rivers Confluence</div>
+      </div>
+    </button>
+    <button class="cam-btn" data-view="skybridge">
+      <span class="num">03</span>
+      <div class="cam-text">
+        <div class="name">来福士 · 水晶连廊</div>
+        <div class="desc">The Crystal Skybridge</div>
+      </div>
+    </button>
+    <button class="cam-btn" data-view="bridge">
+      <span class="num">04</span>
+      <div class="cam-text">
+        <div class="name">千厮门大桥 & 轻轨</div>
+        <div class="desc">Qiansimen Bridge & Rail</div>
+      </div>
+    </button>
+    <button class="cam-btn" data-view="cablecar">
+      <span class="num">05</span>
+      <div class="cam-text">
+        <div class="name">长江索道飞渡</div>
+        <div class="desc">Yangtze Cableway</div>
+      </div>
+    </button>
+    <button class="cam-btn active" data-view="chaotianmen"><span class="num">06</span><div class="cam-text"><div class="name">朝天门 · 八座风帆</div><div class="desc">Raffles City</div></div></button>
+    <button class="cam-btn" data-view="jiefangbei"><span class="num">07</span><div class="cam-text"><div class="name">解放碑 · 十字金街</div><div class="desc">Liberation Monument</div></div></button>
+    <button class="cam-btn" data-view="auditorium"><span class="num">08</span><div class="cam-text"><div class="name">人民大礼堂</div><div class="desc">People’s Auditorium</div></div></button>
+    <button class="cam-btn" data-view="pipa"><span class="num">09</span><div class="cam-text"><div class="name">枇杷山公园</div><div class="desc">Pipa Mountain Park</div></div></button>
+    <button class="cam-btn" data-view="huguang"><span class="num">10</span><div class="cam-text"><div class="name">湖广会馆 · 院落戏台</div><div class="desc">Huguang Guild Hall</div></div></button>
+    <button class="cam-btn" data-view="shibati"><span class="num">11</span><div class="cam-text"><div class="name">十八梯 · 七街六巷</div><div class="desc">Shibati Historic Quarter</div></div></button>
+    <button class="cam-btn" data-view="zengjiayan"><span class="num">12</span><div class="cam-text"><div class="name">曾家岩 · 公轨大桥</div><div class="desc">Zengjiayan Bridge</div></div></button>
+    </div>
+  </nav>
+
+  <!-- Control Floating Panel (Right) -->
+  <aside class="control-panel">
+    <button type="button" class="sidebar-toggle" data-sidebar-label="场景控制" aria-expanded="true" aria-controls="control-sidebar-content">场景控制 · 收起</button>
+    <div class="sidebar-content" id="control-sidebar-content">
+    <div class="panel-section">
+      <div class="section-title">镜头与视觉控制 (Controls & Lighting)</div>
+      <div class="control-row">
+        <span>慢速自动旋转</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-autorotate" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="control-row hint-row">
+        <span>左键拖拽：平移 · 右键拖拽：旋转/俯仰<br />滚轮：向光标缩放 · 双击或 F：聚焦</span>
+      </div>
+    </div>
+
+    <div class="panel-section nav-demo">
+      <div class="section-title">导航演示 (Guided Routes)</div>
+      <p class="nav-lede">沿模型地形走两条动线：十八梯的梯坎与平台、洪崖洞的垂直楼层。点击路线卡开始演示。</p>
+      <div class="nav-cards">
+        <button type="button" class="nav-card" data-route="shibati">
+          <span class="nav-card-tag">A · 梯坎</span>
+          <span class="nav-card-name">十八梯</span>
+          <span class="nav-card-meta">较场口 → 厚慈街<br />约 400 m · 18 个平台</span>
+        </button>
+        <button type="button" class="nav-card" data-route="hongyadong">
+          <span class="nav-card-tag">B · 楼层</span>
+          <span class="nav-card-name">洪崖洞</span>
+          <span class="nav-card-meta">1F → 4F → 11F<br />11 层 · 资料约 75 m<br />入口 1F / 4F / 11F</span>
+        </button>
+        <button type="button" class="nav-card nav-card-wide" data-route="chaotianmen">
+          <span class="nav-card-tag">C · 长坡</span>
+          <span class="nav-card-name">朝天门长坡</span>
+          <span class="nav-card-meta">解放碑 → 朝天门码头<br />资料约 1.6 km · 高差 70–80 m<br />模型净下降约 100 m</span>
+        </button>
+      </div>
+
+      <div class="nav-live" id="nav-live" hidden>
+        <div class="nav-live-head">
+          <strong id="nav-route-name">十八梯</strong>
+          <span id="nav-route-sub">较场口 → 厚慈街</span>
+          <em class="nav-floor-now" id="nav-floor-now" hidden>1F</em>
+        </div>
+        <div class="nav-cue" id="nav-cue">前方 36 级台阶</div>
+        <div class="nav-stats-label" id="nav-stats-label">模型估算</div>
+        <dl class="nav-stats" id="nav-stats"></dl>
+        <div class="nav-chart" id="nav-chart"></div>
+        <div class="nav-legend">
+          <span><i style="--dot: #f97316"></i>阶梯</span>
+          <span><i style="--dot: #facc15"></i>坡道</span>
+          <span><i style="--dot: #22d3ee"></i>平路</span>
+        </div>
+        <div class="nav-floors" id="nav-floors" hidden></div>
+        <div class="nav-progress" role="progressbar" aria-label="演示进度"><span id="nav-progress-fill"></span></div>
+        <div class="nav-actions">
+          <button type="button" class="nav-btn nav-btn-primary" id="nav-play">开始演示</button>
+          <button type="button" class="nav-btn" id="nav-back">返回选择</button>
+          <button type="button" class="nav-btn" id="nav-exit">退出</button>
+        </div>
+        <p class="nav-note" id="nav-note">演示路线，高程为模型估算；台阶与楼层为公开资料＋模型推算。</p>
+      </div>
+    </div>
+
+    <div class="photo-panel">
+      <button id="photo-open" type="button" aria-haspopup="dialog" aria-controls="photo-page" aria-expanded="false">📷 打开合影相框</button>
+    </div>
+
+    <details class="model-sources">
+      <summary>建模资料与范围</summary>
+      <p id="model-source-status"></p>
+      <a href="https://www.openstreetmap.org/relation/4738525" target="_blank" rel="noopener noreferrer">半岛范围、建筑轮廓与道路：OpenStreetMap</a>
+      <a href="https://www.openstreetmap.org/relation/12982622" target="_blank" rel="noopener noreferrer">两江岸线：OpenStreetMap 河流水域关系 12982622</a>
+      <a href="https://www.openstreetmap.org/relation/9087399" target="_blank" rel="noopener noreferrer">两江岸线：OpenStreetMap 河流水域关系 9087399</a>
+      <p>西侧陆地连接与两江对岸按河流水域轮廓补齐；对岸未细化建筑，超出现有高程网格的边缘地形使用边界高程估算。</p>
+      <a href="https://www.cqyz.gov.cn/zjyz/yzgk/zrdl/202302/t20230223_11646635.html" target="_blank" rel="noopener noreferrer">地形高差：渝中区政府</a>
+      <a href="https://www.opentopodata.org/datasets/srtm/" target="_blank" rel="noopener noreferrer">地形数据：SRTM，经 Open Topo Data 获取并下采样</a>
+      <a href="https://www.usgs.gov/centers/eros/science/usgs-eros-archive-digital-elevation-shuttle-radar-topography-mission-srtm" target="_blank" rel="noopener noreferrer">高程基准与限制：USGS SRTM 数据说明</a>
+      <a href="https://dfz.cq.gov.cn/zqlswh/fjms_417821/202311/t20231102_12511619.html" target="_blank" rel="noopener noreferrer">解放碑：27.5米、八角碑身、四面钟</a>
+      <a href="https://www.cqyz.gov.cn/zjyz/lyyz/lswh/lsww/202210/t20221008_11166849.html" target="_blank" rel="noopener noreferrer">人民大礼堂：65米、中轴对称与双翼</a>
+      <a href="https://zfcxjw.cq.gov.cn/cqcjdag/csjy/202504/t20250416_14526589.html" target="_blank" rel="noopener noreferrer">洪崖洞：11层、79米</a>
+      <a href="https://www.safdiearchitects.com/projects/raffles-city-chongqing" target="_blank" rel="noopener noreferrer">来福士：8栋塔楼与水晶连廊</a>
+      <a href="https://www.cqsuodao.com/" target="_blank" rel="noopener noreferrer">长江索道：新华路至上新街</a>
+      <a href="https://mzj.cq.gov.cn/sy_218/bmdt/mzyw/202411/t20241101_13760704.html" target="_blank" rel="noopener noreferrer">鹅岭公园：山脊与园林景观</a>
+      <a href="https://cgj.cq.gov.cn/rdzt/ylsmypcswm/202206/t20220602_10775608.html" target="_blank" rel="noopener noreferrer">枇杷山公园：山地绿化与红星亭</a>
+      <a href="https://dfz.cq.gov.cn/zqlswh/rwby_417819/202406/t20240605_13267997.html" target="_blank" rel="noopener noreferrer">东水门大桥：双塔及塔高</a>
+      <a href="https://whlyw.cq.gov.cn/zjwl/yzq/cqwlzy/zqwwzy/202405/t20240507_13182428.html" target="_blank" rel="noopener noreferrer">湖广会馆：禹王宫、齐安和广东公所建筑群</a>
+      <a href="https://www.cqyz.gov.cn/zwgk_229/jytabl/rddbjy/202206/t20220606_10781311.html" target="_blank" rel="noopener noreferrer">十八梯：保护七街六巷格局</a>
+      <a href="https://www.cq.gov.cn/ywdt/zwhd/qxdt/202109/t20210923_9745036.html" target="_blank" rel="noopener noreferrer">十八梯：公开报道约70米高低落差，非测绘高程</a>
+      <a href="https://www.cq.gov.cn/zjcq/cycq/jplyxl/dsy/dsjp/202608/t20260826_15982335.html" target="_blank" rel="noopener noreferrer">李子坝：2号线与楼内6—7层轨道空间</a>
+      <a href="https://m.12371.gov.cn/content/2025-09/11/content_498761.html" target="_blank" rel="noopener noreferrer">李子坝商住楼：19层与结构分离设计的公开报道</a>
+      <a href="https://jtj.cq.gov.cn/sy_240/bmdt/202305/t20230515_11963389.html" target="_blank" rel="noopener noreferrer">2号线：4、6、8辆编组混跑</a>
+      <a href="https://www.cq.gov.cn/zwgk/zfxxgkzl/fdzdgknr/zdxm/dtxx/201909/t20190904_8808071.html" target="_blank" rel="noopener noreferrer">曾家岩大桥：135＋270＋135米主跨布局</a>
+      <a href="https://www.cq.gov.cn/zwgk/zfxxgkzl/fdzdgknr/zdxm/dtxx/201808/t20180816_8807832.html" target="_blank" rel="noopener noreferrer">曾家岩大桥：32.6米桥宽与钢桁梁结构</a>
+      <a href="https://www.cq.gov.cn/zwgk/zfxxgkzl/fdzdgknr/zdxm/dtxx/202009/t20200901_8808316.html" target="_blank" rel="noopener noreferrer">曾家岩大桥：实际中国红涂装、路上轨下与六车道</a>
+      <a href="https://zfcxjw.cq.gov.cn/cqcjdag/csjy/202503/t20250307_14381409.html" target="_blank" rel="noopener noreferrer">牛角沱大桥：五跨钢桁梁及桥式档案图</a>
+      <a href="https://dfz.cq.gov.cn/zqlswh/rwby_417819/202405/t20240516_13210375.html" target="_blank" rel="noopener noreferrer">牛角沱大桥：384米正桥、21.5米桥宽与人行道尺寸</a>
+      <a href="https://dfz.cq.gov.cn/zqlswh/rwby_417819/202406/t20240605_13268009.html" target="_blank" rel="noopener noreferrer">菜园坝大桥：800米主桥、11.2米桁高及拱肋截面</a>
+      <a href="https://caminstech.upc.edu/sites/default/files/Design%20of%20the%20Main%20Spans%20of%20the%20Chongqing%20Caiyuanba%20Bridge.pdf" target="_blank" rel="noopener noreferrer">菜园坝大桥：设计者论文中的Y构、内倾拱肋与公轨结构</a>
+      <a href="https://www.mdpi.com/2076-3417/8/4/650" target="_blank" rel="noopener noreferrer">菜园坝大桥：五跨布局、320米钢拱、56.44米矢高与10.67°内倾</a>
+      <a href="https://www.openstreetmap.org/way/767445055" target="_blank" rel="noopener noreferrer">菜园坝3号线：已采集双线单轨路径767445055及1055889726</a>
+      <a href="https://jtj.cq.gov.cn/sy_240/bmdt/202410/t20241021_13722428.html" target="_blank" rel="noopener noreferrer">3号线：八辆编组列车公开记录，模型不代表实时班次</a>
+    </details>
+
+    <div class="panel-section info-badge">
+      <div class="geo-tag">📍 重庆市渝中区长江与嘉陵江交汇处</div>
+      <p class="geo-desc">
+        朝天门曾为重庆古城十七门之首。嘉陵江以灰绿色呈现，长江以沙褐色呈现；两江在朝天门交汇后，下游水面统一延续长江的颜色。
+      </p>
+      <div class="info-link-row">
+        <a class="info-home-link" href="https://link231rog.github.io/Poster/" target="_blank" rel="noopener noreferrer">🏠 主页作品集：https://link231rog.github.io/Poster/ ↗</a>
+      </div>
+      <div class="info-link-row" style="margin-top: 6px;">
+        <a class="info-github-link" href="https://github.com/link231rog/project-3d-chongqin" target="_blank" rel="noopener noreferrer">
+          <svg class="github-icon" viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+          <span>GitHub 开源：project-3d-chongqin ↗</span>
+        </a>
+      </div>
+    </div>
+    </div>
+  </aside>
+
+  <dialog id="photo-page" aria-labelledby="photo-page-title">
+    <div class="photo-page-shell">
+      <header class="photo-page-header">
+        <div><p class="photo-eyebrow">CHONGQING · PHOTO STUDIO</p><h2 id="photo-page-title">把你放进朝天门</h2></div>
+        <button id="photo-close" type="button" autofocus>返回沙盘 ×</button>
+      </header>
+      <main class="photo-workspace">
+        <section class="photo-frame" aria-label="合影相框预览">
+          <div id="photo-stage">
+            <canvas id="photo-background" aria-label="所选镜头背景"></canvas>
+            <div id="photo-layer" hidden>
+              <img id="photo-preview" alt="合影照片，可拖动位置" tabindex="0" draggable="false" />
+            </div>
+          </div>
+          <footer class="photo-frame-caption"><strong>重庆 · 渝中半岛</strong><span>与山城，留一张合影。</span><span>地图数据 © OpenStreetMap contributors · ODbL</span></footer>
+        </section>
+        <aside class="photo-panel photo-editor" aria-label="合影编辑">
+          <h3>我的山城纪念照</h3>
+          <label class="photo-label" for="photo-view">选择背景镜头</label>
+          <select id="photo-view">
+            <option value="">使用当前镜头</option>
+            <option value="overview">渝中半岛全景</option>
+            <option value="chaotianmen">朝天门 · 来福士</option>
+            <option value="confluence">两江交汇</option>
+            <option value="skybridge">来福士 · 水晶连廊</option>
+            <option value="bridge">千厮门大桥</option>
+            <option value="cablecar">长江索道</option>
+            <option value="jiefangbei">解放碑</option>
+            <option value="auditorium">人民大礼堂</option>
+            <option value="pipa">枇杷山公园</option>
+            <option value="huguang">湖广会馆</option>
+            <option value="shibati">十八梯</option>
+            <option value="zengjiayan">曾家岩公轨大桥</option>
+          </select>
+          <label class="photo-label" for="photo-file">上传照片</label>
+          <input id="photo-file" type="file" accept="image/png,image/jpeg,image/webp" />
+          <button id="photo-demo" type="button">用 🧑 演示</button>
+          <label class="photo-label" for="photo-scale">人像大小</label>
+          <input id="photo-scale" type="range" min="10" max="70" value="26" disabled />
+          <div class="photo-actions">
+            <button id="photo-save" type="button" disabled>保存相框合影</button>
+            <button id="photo-remove" type="button" disabled>移除人像</button>
+          </div>
+          <p class="photo-help">拖动人像调整位置。普通照片保留原背景；透明 PNG 可直接叠加人像。下载包含相框，不含操作面板。</p>
+          <p id="photo-status" class="photo-help" role="status" aria-live="polite"></p>
+        </aside>
+      </main>
+    </div>
+  </dialog>
+
+  <!-- Interactive 3D Landmark Tooltip -->
+  <div id="landmark-tooltip" class="hidden">
+    <div class="tooltip-badge">LANDMARK</div>
+    <h3 id="tooltip-title">建筑名称</h3>
+    <p id="tooltip-content">建筑详细描述信息</p>
+  </div>
+
+  <!-- Museum Plinth Plate (Physical Diorama Label) -->
+  <div class="plinth-plaque">
+    <div class="plaque-inner">
+      <div class="plaque-title">CHONGQING · YUZHONG</div>
+      <div class="plaque-sub">YUZHONG PENINSULA · TWO RIVERS, ONE MOUNTAIN CITY</div>
+    </div>
+  </div>
+
+  <div class="bottom-attributions">
+    <a class="home-attribution" href="https://link231rog.github.io/Poster/" target="_blank" rel="noopener noreferrer">🏠 主页：https://link231rog.github.io/Poster/</a>
+    <a class="github-attribution" href="https://github.com/link231rog/project-3d-chongqin" target="_blank" rel="noopener noreferrer">⭐ GitHub 开源：project-3d-chongqin</a>
+    <a class="map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">地图数据 © OpenStreetMap contributors · ODbL</a>
+  </div>
+
+  <!-- Route playback HUD -->
+  <button type="button" class="nav-detail" id="nav-detail" hidden>详情</button>
+  <div class="nav-hud" id="nav-hud" hidden>
+    <div class="nav-hud-head">
+      <strong id="nav-hud-name">十八梯</strong>
+      <span id="nav-hud-cue">前方 36 级台阶</span>
+    </div>
+    <div class="nav-hud-bar" role="progressbar" aria-label="演示进度"><span id="nav-hud-fill"></span></div>
+    <span class="nav-hud-remaining" id="nav-hud-remaining">剩余 400 m</span>
+    <div class="nav-hud-actions">
+      <button type="button" id="nav-hud-play">暂停</button>
+      <button type="button" id="nav-hud-back">返回选择</button>
+      <button type="button" id="nav-hud-exit">退出</button>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-content">
+      <div class="spinner"></div>
+      <h2>正在构建渝中半岛 3D 山城...</h2>
+      <p class="loader-status">载入建筑轮廓、两江岸线与山地路网</p>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

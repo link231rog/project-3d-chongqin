@@ -1,0 +1,49 @@
+[
+  {"type": "node", "id": 1, "lat": 29.5715, "lon": 106.5888},
+  {"type": "node", "id": 2, "lat": 29.5716, "lon": 106.5889},
+  {"type": "node", "id": 3, "lat": 29.5717, "lon": 106.5890},
+  {"type": "node", "id": 4, "lat": 29.5718, "lon": 106.5891},
+  {"type": "node", "id": 5, "lat": 29.5719, "lon": 106.5892},
+  {"type": "way", "id": 100, "nodes": [3, 2, 1],
+   "tags": {"highway": "primary", "name": "测试隧道", "oneway": "-1", "lanes": "2",
+            "surface": "asphalt", "maxspeed": "40", "tunnel": "yes", "layer": "-1"}},
+  {"type": "way", "id": 101, "nodes": [1, 4],
+   "tags": {"highway": "secondary", "lanes": "2", "width": "12", "surface": "asphalt",
+            "maxspeed": "40", "sidewalk": "both", "junction": "roundabout"}},
+  {"type": "way", "id": 102, "nodes": [2, 4, 5],
+   "tags": {"highway": "residential", "bridge": "yes", "access": "destination"}},
+  {"type": "way", "id": 103, "nodes": [1, 9],
+   "tags": {"highway": "service"}},
+  {"type": "relation", "id": 900,
+   "tags": {"type": "restriction", "restriction": "no_left_turn"},
+   "members": [
+     {"type": "way", "ref": 100, "role": "from"},
+     {"type": "node", "ref": 2, "role": "via"},
+     {"type": "way", "ref": 101, "role": "to"}
+   ]},
+  {"type": "relation", "id": 902,
+   "tags": {"type": "restriction", "restriction": "no_u_turn"},
+   "members": [
+     {"type": "way", "ref": 999, "role": "from"},
+     {"type": "node", "ref": 8, "role": "via"},
+     {"type": "way", "ref": 101, "role": "to"}
+   ]},
+  {"type": "relation", "id": 903,
+   "tags": {"type": "restriction:hgv", "restriction:hgv": "no_straight_on"},
+   "members": [
+     {"type": "way", "ref": 101, "role": "from"},
+     {"type": "node", "ref": 4, "role": "via"},
+     {"type": "way", "ref": 102, "role": "to"}
+   ]},
+  {"type": "relation", "id": 904,
+   "tags": {"type": "restriction", "restriction": "no_right_turn",
+            "restriction:conditional": "no_right_turn @ (Mo-Fr 07:00-09:00)"},
+   "members": [
+     {"type": "way", "ref": 102, "role": "from"},
+     {"type": "node", "ref": 4, "role": "via"},
+     {"type": "way", "ref": 101, "role": "to"}
+   ]},
+  {"type": "relation", "id": 901,
+   "tags": {"type": "multipolygon", "natural": "water"},
+   "members": []}
+]
