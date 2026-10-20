@@ -154,8 +154,9 @@ async function init() {
 
   // 5. Lighting
   district = await buildPeninsula(scene, interactiveObjects, buildingNightEmissives);
-  camera.position.copy(district.raffles).add(new THREE.Vector3(94.2, 39.2, 51.9));
-  controls.target.copy(district.raffles).add(new THREE.Vector3(-13.8, 10.2, 5.9));
+  camera.position.set(118, 128, 68);
+  controls.target.set(-68, 14, 52);
+  controls.update(0);
   setupLighting(env);
   buildWeatherSky(env);
 
@@ -1671,7 +1672,7 @@ function setupUI() {
   const cableCenter = cablewayCurve.getPoint(0.5);
   const viewPresets = {
     overview: { pos: cityCenter.clone().add(new THREE.Vector3(160, 200, 220)), target: cityCenter.clone().setY(8) },
-    chaotianmen: { pos: district.raffles.clone().add(new THREE.Vector3(94.2, 39.2, 51.9)), target: district.raffles.clone().add(new THREE.Vector3(-13.8, 10.2, 5.9)) },
+    chaotianmen: { pos: new THREE.Vector3(118, 128, 68), target: new THREE.Vector3(-68, 14, 52) },
     confluence: { pos: district.tip.clone().add(new THREE.Vector3(110, 80, 60)), target: district.tip.clone().add(new THREE.Vector3(15, 0, -5)) },
     skybridge: { pos: district.raffles.clone().add(new THREE.Vector3(25, 32, 28)), target: district.raffles.clone().add(new THREE.Vector3(0, 21, 0)) },
     bridge: { pos: bridgeCenter.clone().add(new THREE.Vector3(25, 22, 32)), target: bridgeCenter },
