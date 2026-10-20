@@ -154,8 +154,8 @@ async function init() {
 
   // 5. Lighting
   district = await buildPeninsula(scene, interactiveObjects, buildingNightEmissives);
-  camera.position.set(118, 128, 68);
-  controls.target.set(-68, 14, 52);
+  camera.position.set(150, 116, -29);
+  controls.target.set(-126, -4, 81);
   controls.update(0);
   setupLighting(env);
   buildWeatherSky(env);
@@ -483,7 +483,7 @@ function buildWaterConfluence() {
 
     void main() {
       #include <logdepthbuf_fragment>
-      // Only the mapped upstream Jialing channel is green; downstream stays Yangtze brown.
+      // Both rivers share the same teal palette, distinct from the sandstone terrain.
       float upstream = 1.0 - smoothstep(uConfluenceX - 1.0, uConfluenceX + 1.0, vWorldPos.x);
       float jialing = texture2D(uJialingMask, vUv).r * upstream;
       vec3 waterColor = mix(uYangtzeColor, uJialingColor, jialing);
@@ -492,14 +492,14 @@ function buildWaterConfluence() {
       vec2 flow = vWorldPos.xz + vec2(uTime * 0.012, uTime * 0.008);
       float swirl = valueNoise(vec2(flow.x * 0.02, flow.y * 0.07)) * 0.6
                   + valueNoise(vec2(flow.x * 0.05, flow.y * 0.16)) * 0.4;
-      waterColor *= 0.9 + swirl * 0.2;
+      waterColor *= 0.8 + swirl * 0.4;
       waterColor *= mix(1.0, 0.42, uNightFactor);
       // Per-fragment view vector; the plane has only four vertices, so an interpolated
       // view direction would wash out the grazing-angle sky reflection.
       vec3 viewDir = normalize(cameraPosition - vWorldPos);
       float fresnel = pow(1.0 - clamp(viewDir.y, 0.0, 1.0), 1.6);
       // Add the sky sheen instead of mixing toward it, so the muddy hue survives.
-      vec3 finalColor = waterColor + uSkyReflection * (0.04 + fresnel * 0.2) + uSunset * 0.04;
+      vec3 finalColor = waterColor + uSkyReflection * (0.015 + fresnel * 0.12) + uSunset * 0.04;
 
       gl_FragColor = vec4(finalColor, 1.0);
       #include <tonemapping_fragment>
@@ -512,7 +512,7 @@ function buildWaterConfluence() {
     fragmentShader: waterFragmentShader,
     uniforms: {
       uTime: { value: 0 },
-      uYangtzeColor: { value: new THREE.Color(0x6f5f3f) },
+      uYangtzeColor: { value: new THREE.Color(0x1a6660) },
       uJialingColor: { value: new THREE.Color(0x1a6660) },
       uJialingMask: { value: riverMask },
       uConfluenceX: { value: district.tip.x },
@@ -1672,7 +1672,7 @@ function setupUI() {
   const cableCenter = cablewayCurve.getPoint(0.5);
   const viewPresets = {
     overview: { pos: cityCenter.clone().add(new THREE.Vector3(160, 200, 220)), target: cityCenter.clone().setY(8) },
-    chaotianmen: { pos: new THREE.Vector3(118, 128, 68), target: new THREE.Vector3(-68, 14, 52) },
+    chaotianmen: { pos: new THREE.Vector3(150, 116, -29), target: new THREE.Vector3(-126, -4, 81) },
     confluence: { pos: district.tip.clone().add(new THREE.Vector3(110, 80, 60)), target: district.tip.clone().add(new THREE.Vector3(15, 0, -5)) },
     skybridge: { pos: district.raffles.clone().add(new THREE.Vector3(25, 32, 28)), target: district.raffles.clone().add(new THREE.Vector3(0, 21, 0)) },
     bridge: { pos: bridgeCenter.clone().add(new THREE.Vector3(25, 22, 32)), target: bridgeCenter },
